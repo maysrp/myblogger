@@ -8,3 +8,8 @@
 
 导入数据库:myblog.sql
 
+管理员：admin
+m默认密码: 123
+
+
+DEMO:http://www.gjcomic.com
