@@ -7,6 +7,7 @@
 			<div class="row" style="background-color:#FFFFFF;border-radius:10px;padding:10px;margin-top:20px;">
 				<p><h4><b ><a href="/index.php/Index/post/pid/{$post['pid']}" class="text-muted">{$post['title']}</a></b> <small data-toggle="modal" data-target="#post_{$post['pid']}"><span class="glyphicon glyphicon-new-window"></span></small></h4></p>
 				<p><small>作者 {$post['uid']|uidname} 发布于 {$post['time']|date="Y-m-d H:i",###} / <span class="glyphicon glyphicon-eye-open"></span> {$post['view']} / <span class="glyphicon glyphicon-comment"></span> {$post['re']} / 标签 {$post['tid']|tags}</small></p>
+				{$post['image']|postimage}
 				
 				<div id="post_{$post['pid']}" class="modal fade" >
 					<div class="modal-dialog modal-lg">

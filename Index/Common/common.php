@@ -67,3 +67,9 @@
 			echo "<a href=\"/index.php/Index/post/pid/".$re['pid']."\">". $re['title']."</a>";
 		}
 	}
+	function postimage($v){
+		$image=json_decode($v,true);
+		if(count($image)){
+			echo "<p>".$image[0]."</p>";
+		}
+	}
