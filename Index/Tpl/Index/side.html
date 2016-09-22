@@ -8,17 +8,28 @@
 		</div>
 	</form>
 </div>
-
 <div class="row" style="background-color:#FFFFFF;border-radius:7px;padding:10px;margin-top:20px;margin-left:10px;">
 <p><h4 class="text-center">热门标签</h4></p>
 	<?php  echo hottag() ?>
 </div>
-
 <div class="row" style="background-color:#FFFFFF;border-radius:7px;padding:10px;margin-top:20px;margin-left:10px;">
 <p ><h4 class="text-center">最近的文章</h4></p>
 	<?php  echo lastpost() ?>
 </div>
-
+<div class="row" style="background-color:#FFFFFF;border-radius:7px;padding:10px;padding-left:0px;margin-top:20px;margin-left:10px;">
+<?php  shelves()  ?>
+</div>
 <div class="row" style="background-color:#FFFFFF;border-radius:7px;padding:20px;margin-top:20px;margin-left:10px;">
 	{$site['footer']}
 </div>
+<script type="text/javascript">
+	$(".slide_click").click(function(){
+		var value=$(this).attr("value");
+		var jugg=$("#li"+value).css("display");
+		if(jugg=="none"){
+			$("#li"+value).css("display","inline");
+		}else{
+			$("#li"+value).css("display","none");
+		}	
+	})
+</script>

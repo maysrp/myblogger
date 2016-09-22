@@ -67,7 +67,8 @@
 			}
 			$add_tid['tid']=json_encode($tid_tag);
 			$add_tid['pid']=$pid;
-			$this->save($add_tid);
+			D('Shelves')->post_add($pid);
+			$this->save($add_tid);//
 			return $pid;
 		}
 		function edit_show($pid){
@@ -87,6 +88,7 @@
 			if($dre){
 				$x=$this->delete($pid);
 				if($x){
+					D('Shelves')->post_del($dre);//
 					$re['re']="success";
 					$re['end']="成功删除！";
 				}else{
@@ -147,6 +149,15 @@
 				$re['end']="";
 			}
 			return $re;
+		}
+		function shelves($pid){
+			$p=$this->find($pid);
+			if($p){
+				$post['pid']=$p['pid'];
+				$post['title']=$p['title'];
+				$post['time']=$p['time'];
+				return $post;
+			}
 		}
 		
 

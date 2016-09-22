@@ -49,7 +49,7 @@
 		return $re;
 	}
 	function lastpost(){
-		$post=D('Post')->limit(10)->order("time desc")->select();
+		$post=D('Post')->limit(5)->order("time desc")->select();
 		$re="<ul>";
 		foreach ($post as $va) {
 			$re=$re."<li><a href=/index.php/Index/post/pid/".$va['pid'].">".$va['title']."</a></li>";
@@ -72,4 +72,24 @@
 		if(count($image)){
 			echo "<p>".$image[0]."</p>";
 		}
+	}
+	function shelves(){
+		$info=D('Shelves')->shelves();
+		echo "<ul>";
+		foreach ( $info as $key => $value) {
+			echo "<li>".$key."年</li>";
+			echo "<ul>";
+				foreach ($value as $key_1 => $value_1) {				
+					foreach ($value_1 as $key_2 => $value_2) {
+						echo "<li class=\"slide_click\" style=\"margin-left:-30px;\" value=\"".$key_1.$key_2."\">".$key_1."月".$key_2."日</li>";
+						echo "<div id=\"li".$key_1.$key_2."\" style=\"display:none\"><ul style=\"margin-left:-30px;\">";
+							foreach ($value_2 as $key_3 => $value_3) {
+								echo "<li style=\"margin-left:-30px;\"><a href=\"/index.php/Index/post/pid/".$key_3."\" >".$value_3['title']."</a></li>";
+							}
+						echo "</ul></div>";
+					}		
+				}
+			echo "</ul>";
+		}
+		echo "</ul>";	
 	}
