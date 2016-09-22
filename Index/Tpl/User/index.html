@@ -4,9 +4,12 @@
 <div class="col-md-3">
 	<div class="row">
 		<div class="row" style="padding:20px;background-color:#FFFFFF;border-radius:5px;margin:20px;">
-			<p></p>
-			<p>{$user|uidname}</p>
-			<p><button  class="btn btn-warning" data-toggle="modal" data-target="#change">修改密码</button></p>
+			<p class="text-center"><img src="{$_SESSION|avatar}" width="120px" class="img-circle" id="user_image" data-toggle="tooltip" data-placement="left" title="点击更换头像"></p>
+			<p ><h3 class="text-center">{$user|uidname}</h3></p>
+      <div class="hidden">
+        <input type="file" name="image" id="up_image">
+      </div>
+			<p class="text-center"><button  class="btn btn-warning" data-toggle="modal" data-target="#change">修改密码</button></p>
 		</div>
 		<div class="row" style="padding:20px;background-color:#FFFFFF;border-radius:5px;margin:20px;">
 			<form method="post" action="/index.php/User/site">
@@ -125,3 +128,31 @@
     </div>
   </div>
 </div>
+
+<script type="text/javascript">
+  $("#user_image").click(
+    function(){
+      $("#up_image").click();
+    }
+  )
+  $("#up_image").change(function(){
+    file=this.files['0'];
+    var fd=new FormData();
+    fd.append("image",file);
+    $.ajax({
+      url:"/index.php/User/image",
+      type:"POST",
+      data:fd,
+      processData:false,
+      contentType:false,
+      success:function(data){
+        if(data.re=="success"){
+           history.go(0);
+        }
+      
+       
+      }
+    })
+
+  })
+</script>

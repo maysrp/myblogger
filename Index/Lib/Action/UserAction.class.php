@@ -170,6 +170,16 @@
  				return;
  			}
  		}
+ 		function alltag(){
+ 			$uid=$this->_session('uid');
+ 			if(!$uid){
+ 				$this->error("请先登入！");
+ 				return;
+ 			}
+ 			$all=D('Tag')->order("num desc")->select();
+ 			$this->assign("all",$all);
+ 			$this->display();
+ 		}
  		function footer(){
  			$uid=$this->_session('uid');
  			if(!$uid){
@@ -310,6 +320,35 @@
  				$this->success($re['end']);
  			}else{
  				$this->error($re['end']);
+ 			}
+ 		}
+ 		function image(){
+ 			if($_SESSION['uid']){
+ 				import('ORG.Net.UploadFile');
+ 				$upload=new UploadFile();
+ 				$upload->maxSize=2408200;
+ 				$upload->allowExts=array('jpg','png','jpeg','gif');
+ 				$upload->savePath="./Uploads/tx/";
+ 				$upload->thumb=true;
+ 				$upload->thumbPrefix='m_';
+ 				$upload->thumbMaxWidth="300";
+ 				$upload->thumbMaxHeight="300";
+ 				if(!$upload->upload()){
+ 					$re['re']="error";
+ 					$re['end']=$this->error($upload->getErrorMsg());
+ 				}else{
+ 					$re['re']="success";
+ 					$re['end']=$upload->getUploadFileInfo();
+ 					$save['uid']=1;
+ 					$name=$upload->thumbPrefix.$re['end']['0']['savename'];
+ 					$path=$re['end'][0]['savepath'].$name;
+ 					$path=substr($path,1);
+ 					$save['image']=$path;
+ 					D('User')->save($save);
+ 				}
+
+ 				$this->ajaxReturn($re);
+
  			}
  		}
  		

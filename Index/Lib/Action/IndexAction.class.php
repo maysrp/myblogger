@@ -89,6 +89,11 @@ class IndexAction extends Action {
     }
     function repost(){
     	if($_POST){
+            if($_SESSION['uid']){
+                $post['email']="me";
+            }else{
+                $post['email']=$this->_post('email');
+            }
     		$post['pid']=$_POST['pid'];
     		$post['text']=$_POST['text'];
     		$re=D('Repost')->add_repost($post);

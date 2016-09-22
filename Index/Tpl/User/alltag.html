@@ -1,0 +1,14 @@
+<div class="row">
+	<include file="User/nav" />
+</div>
+<div class="row">
+	<div class="row" style="margin:10px">
+		<span class="col-md-2"><h3>所有标签<small></h3></span>
+	</div>
+	<div class="row">
+		<volist name="all" id="tag">
+			<a href="/index.php/User/tag/tid/{$tag['tid']}" class="btn btn-default" style="margin:10px;">{$tag['tag']} <span class="badge">{$tag['num']}</span></a>
+		</volist>
+	</div>
+
+</div>

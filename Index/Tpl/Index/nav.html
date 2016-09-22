@@ -6,8 +6,9 @@
 		<h3><a href="" class="text-info"><small>{$site['name']}</small></a></h3>
 	</div>
 	<if condition="$_SESSION['uid'] gt 0">
-		<div class="col-md-1 col-md-offset-8">
-			<h3><a href="/index.php/User/index" class="text-info"><small>用户中心</small></a></h3>
+		<div class="col-md-3 col-md-offset-6" style="margin-top:20px;">
+			<a href="/index.php/User/index"  class="btn btn-info">用户中心</a>
+			<a href="/index.php/User/add"  class="btn btn-default">发布</a>
 		</div>
 	</if>
 		

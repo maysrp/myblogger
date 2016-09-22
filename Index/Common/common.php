@@ -2,6 +2,9 @@
 	function uidname($uid){
 		$re=D('User')->find($uid);
 		if($re){
+			if($uid==1){
+				return "管理员";
+			}
 			return $re['name'];
 		}else{
 			return "匿名者";
@@ -79,17 +82,41 @@
 		foreach ( $info as $key => $value) {
 			echo "<li>".$key."年</li>";
 			echo "<ul>";
-				foreach ($value as $key_1 => $value_1) {				
+				foreach ($value as $key_1 => $value_1) {
+					echo "<li class=\"slide_click_moon\" value=\"".$key.$key_1."\" style=\"margin-left:-30px;\">".$key_1."月</li>";
+					echo "<div id=\"moon".$key.$key_1."\" style=\"display:none\"><ul>";				
 					foreach ($value_1 as $key_2 => $value_2) {
-						echo "<li class=\"slide_click\" style=\"margin-left:-30px;\" value=\"".$key_1.$key_2."\">".$key_1."月".$key_2."日</li>";
+						echo "<li class=\"slide_click\" style=\"margin-left:-60px;\" value=\"".$key_1.$key_2."\">".$key_1."月".$key_2."日</li>";
 						echo "<div id=\"li".$key_1.$key_2."\" style=\"display:none\"><ul style=\"margin-left:-30px;\">";
 							foreach ($value_2 as $key_3 => $value_3) {
-								echo "<li style=\"margin-left:-30px;\"><a href=\"/index.php/Index/post/pid/".$key_3."\" >".$value_3['title']."</a></li>";
+								echo "<li style=\"margin-left:-60px;\"><a href=\"/index.php/Index/post/pid/".$key_3."\" >".$value_3['title']."</a></li>";
 							}
 						echo "</ul></div>";
-					}		
+					}
+					echo "</ul></div>";		
 				}
 			echo "</ul>";
 		}
 		echo "</ul>";	
+	}
+	function get_gravatar( $email, $s = 80, $d = 'mm', $r = 'g', $img = false, $atts = array() ) {
+    	$url = 'https://www.gravatar.com/avatar/';
+    	$url .= md5( strtolower( trim( $email ) ) );
+   		$url .= "?s=$s&d=$d&r=$r";
+    	if ( $img ) {
+        	$url = '<img src="' . $url . '"';
+        	foreach ( $atts as $key => $val )
+            	$url .= ' ' . $key . '="' . $val . '"';
+        	$url .= ' />';
+    	}
+    	return $url;
+	}
+	function avatar($info){
+		if($info['uid']){
+			$user=D('User')->find($info['uid']);
+			return $user['image'];
+		}else{
+			return get_gravatar($info['email'],50);
+		}
+
 	}

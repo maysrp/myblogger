@@ -33,4 +33,13 @@
 			$("#li"+value).css("display","none");
 		}	
 	})
+	$(".slide_click_moon").click(function(){
+		var value=$(this).attr("value");
+		var jugg=$("#moon"+value).css("display");
+		if(jugg=="none"){
+			$("#moon"+value).css("display","inline");
+		}else{
+			$("#moon"+value).css("display","none");
+		}	
+	})
 </script>
