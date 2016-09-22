@@ -20,10 +20,10 @@
 			}
 		}
 		function add_repost($post){
-			$data['email']=$post['email'];
 			$data['pid']=$post['pid'];
 			$pre=$this->where($data)->select();
 			$data['lc']=count($pre)+1;
+			$data['email']=$post['email'];
 			$data['time']=time();
 			$data['uid']=$_SESSION['uid'];
 			$data['text']=$post['text'];
