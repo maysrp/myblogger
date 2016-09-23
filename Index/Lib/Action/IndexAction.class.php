@@ -107,6 +107,12 @@ class IndexAction extends Action {
     		$post['pid']=$_POST['pid'];
     		$post['text']=$_POST['text'];
     		$re=D('Repost')->add_repost($post);
+            //判断手机页面直接跳转，JqueryMobile无法二次跳转，需要改进
+            $is_mobile=is_mobile();
+            if($is_mobile){
+                header("Location:".$_SERVER['HTTP_REFERER']);
+                return;
+            }
     		if($re['re']=="success"){
     			$this->success($re['end']);
     			//header("Location:".$_SERVER['HTTP_REFERER']);
