@@ -17,6 +17,11 @@ class IndexAction extends Action {
         $this->assign('list',$list);
         $show=$Page->show();
       	$this->assign('page',$show);
+        $is_mobile=is_mobile();
+        if($is_mobile){
+            $this->display("mobile_index");
+            return;
+        }
       	$this->display();
     }
     function post(){
@@ -39,6 +44,11 @@ class IndexAction extends Action {
       		$this->assign('page',$show);
     		$this->assign("post",$post);
     		D('Post')->view_add($pid);
+            $is_mobile=is_mobile();
+            if($is_mobile){
+                $this->display("mobile_post");
+                return;
+            }
     		$this->display();
     	}else{
     		$this->error("无该文章！");

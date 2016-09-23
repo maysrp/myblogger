@@ -1,0 +1,38 @@
+<script type="text/javascript" src="/src/js/jquery.mobile.js"></script>
+<link rel="stylesheet" type="text/css" href="/src/css/jquery.mobile.css">
+<style type="text/css">
+img{
+	width: 80px;
+	height:80px;
+}
+</style>
+<div data-role="page" >
+	<div data-role="header"  data-theme="b">
+		<a href="/" data-role="button" data-icon>首页</a>
+		<h1>{$site['name']}</h1>
+	</div>
+	<div data-role="content">
+		<ul data-role="listview" >
+			<volist name="list" id="post">
+				<li>
+					<a href="/index.php/Index/post/pid/{$post['pid']}">
+						<h2>{$post['title']}</h2>
+						<p>
+							<small>作者 {$post['uid']|uidname} 发布于 {$post['time']|date="Y-m-d H:i",###} / <span class="glyphicon glyphicon-eye-open"></span> {$post['view']} / <span class="glyphicon glyphicon-comment"></span> {$post['re']}</small>
+						</p>
+					</a>
+				</li>
+			</volist>
+		</ul>
+		<br>
+		<p class="text-center">{$page}</p>
+		
+	</div>
+	
+
+	
+	<div data-role="footer" data-theme="c">
+		<h1>Mybloger</h1>
+
+	</div>
+</div>
