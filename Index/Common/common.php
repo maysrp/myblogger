@@ -15,21 +15,24 @@
 		$count=count($tags);
 		$ix=($count>3)?2:$count-1;
 		$re="";
-		for ($i=0; $i <=$ix ; $i++) { 
-			$re=$re."<a class=\"text-warning\" href=/index.php/User/tag/tid/".$tags[$i]['tid'].">".$tags[$i]['tag']."</a> .";
+		foreach ($tags as $key => $value) {
+			$re=$re."<a class=\"text-warning\" href=/index.php/User/tag/tid/".$key.">".$value['tag']."</a> .";
 		}
 		return $re;
 	}
-	function radio($va,$x){
+	function radio($va,$x){//选择
 		if($va==$x){
 			return "checked";
-
 		}
 	}
-	function active($va,$x){
+	function active($va,$x){//激活 模版 内容
 		if($va==$x){
-			return "active";
-			
+			return "active";		
+		}
+	}
+	function tpl_use($a,$b,$c="active"){//上面两个函数的集合
+		if($a==$b){
+			return $c;
 		}
 	}
 	function tags($tag){//跳转
@@ -37,8 +40,8 @@
 		$count=count($tags);
 		$ix=($count>3)?2:$count-1;
 		$re="";
-		for ($i=0; $i <=$ix ; $i++) { 
-			$re=$re."<a class=\"text-warning\" href=/index.php/Index/tag/tid/".$tags[$i]['tid'].">".$tags[$i]['tag']."</a> .";
+		foreach ($tags as $key => $value) {
+			$re=$re."<a class=\"text-warning\" href=/index.php/Index/tag/tid/".$key.">".$value['tag']."</a> .";
 		}
 		return $re;
 	}
@@ -118,5 +121,10 @@
 		}else{
 			return get_gravatar($info['email'],50);
 		}
-
+	}
+	function tag_text($tid){
+		$info=json_decode($tid,true);
+		foreach ($info as $key => $value) {
+			echo $value['tag']." ";
+		}
 	}

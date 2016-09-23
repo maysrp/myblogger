@@ -24,7 +24,7 @@
 	<div class="row"><h4>标签:</h4></div>
 	<div class="row">
 		<textarea name="tag" class="form-control">
-            {$post['tag']}
+            {$post['tid']|tag_text}
 		</textarea>
 	</div>
 	</form>
@@ -34,6 +34,8 @@
     	toolbars: [
     		[
     			'source', //源代码
+                'blockquote', //引用
+                'insertcode', //代码语言
     			'undo', //撤销
         		'redo', //重做
         		'bold', //加粗

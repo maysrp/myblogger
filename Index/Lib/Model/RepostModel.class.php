@@ -47,6 +47,7 @@
 			$post=D('Post')->own($repost['pid']);
 			if($post){
 				$xe=$this->delete($rid);
+				D('Post')->where("pid='".$repost['pid']."'")->setInc("re",1);
 				if($xe){
 					$re['re']="success";
 					$re['end']="删除成功！";
@@ -64,5 +65,11 @@
 			$sea['pid']=$pid;
 			$re=$this->where($sea)->select();
 			return $re;
+		}
+		function post_del($pid){//删除文章并清空该回复
+			$post=D('Post')->own($pid);
+			if($post){
+				$this->where("pid='".$pid."'")->delete();
+			}
 		}
 	}

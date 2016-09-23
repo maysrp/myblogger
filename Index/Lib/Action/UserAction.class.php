@@ -10,7 +10,7 @@
  			}
  			$xe=D('User')->getcookie();
  			if($xe['re']=="success"){
- 				$this->success($re['end'],U('User/index'));
+ 				$this->success($xe['end'],U('User/index'));
  				return;
  			}
  			if($_POST){
@@ -18,6 +18,7 @@
  				$post['password']=$_POST['password'];
  				$re=D('User')->login($post);
  				if($re['re']=="success"){
+ 					D('User')->setcookie();
  					$this->success($re['end'],U('User/index'));
  				}else{
  					$this->error($re['end']);
@@ -270,19 +271,21 @@
  		function logout(){
  			session_destroy();
  			setcookie("auth","",time()-3600,"/");
+ 			D('User')->delcookie();
  			$this->success("成功离开！",U('User/login'));
  		}
- 		function change(){
+ 		function change(){//密码修改
  			$uid=$this->_session('uid');
  			if(!$uid){
  				$this->error("请先登入！");
  				return;
  			}
  			if ($_POST) {
+ 				$primary=$_POST['primary'];
  				$old=$_POST['old'];
  				$new=$_POST['new'];
  				if ($old==$new) {
-	 				$re=D('User')->password($old);
+	 				$re=D('User')->password($old,$primary);
 	 				if ($re['re']=="success") {
 	 					$this->success($re['end']);
 	 				}else{
@@ -346,9 +349,16 @@
  					$save['image']=$path;
  					D('User')->save($save);
  				}
-
  				$this->ajaxReturn($re);
-
+ 			}
+ 		}
+ 		function deltag(){
+ 			$tid=(int)$_GET['tid'];
+ 			$re=D('Tag')->del_tag($tid);
+ 			if($re['re']=="success"){
+ 				$this->success($re['end']);
+ 			}else{
+ 				$this->error($re['end']);
  			}
  		}
  		

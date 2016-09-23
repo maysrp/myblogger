@@ -104,7 +104,14 @@
 			}
 			return $re;
 		}
-		function password($password){
+		function password($password,$primary){
+			$me=$this->find($_SESSION['uid']);
+			$me_primary=md5(md5($primary).$me['salt']);
+			if($me_primary!=$me['password']){
+				$re['re']="error";
+				$re['end']="原密码错误！";
+				return $re;
+			}
 			$salt=mt_rand(100000,999999);
 			$password=md5(md5($password).$salt);
 			$uid=$_SESSION['uid'];
@@ -124,8 +131,12 @@
 		function setcookie(){//md5(md5($password).$uid)
 			if ($_SESSION['uid']) {
 				$all=$this->find($_SESSION['uid']);
-				$cookie=md5(md5($all['password']).$_SESSION['uid']);
+				$rand=mt_rand(100000,999999);
+				$cookie=md5(md5($all['password']).$_SESSION['uid'].$rand);
 				setcookie("auth",$cookie,time()+86400*30,"/");
+				$save['uid']=$_SESSION['uid'];
+				$save['cookie']=$cookie;
+				$this->save($save);
 			}
 		}
 		function getcookie(){//验证登入,如果有cookie直接跳转
@@ -139,6 +150,11 @@
 				$re['end']="登入中.....";
 				return $re;
 			}
+		}
+		function delcookie(){
+			$save['uid']=$_SESSION['uid'];
+			$save['cookie']="";
+			$this->save($save);
 		}
 		function image($image){
 			if ($_SESSION['uid']) {

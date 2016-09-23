@@ -34,6 +34,18 @@
 		}
 		function del_tag($tid){
 			if($_SESSION['uid']==1){//admin
+				$info=$this->find($tid);
+				$pid_array=json_decode($info['post']);
+				foreach ($pid_array as $key => $value) {
+					$post=D('Post')->find($value);
+					if ($post) {
+						$tid_array=json_decode($post['tid'],true);
+						unset($tid_array[$tid]);
+						$save['pid']=$value;
+						$save['tid']=json_encode($tid_array);
+						D('Post')->save($save);
+					}
+				}
 				$xe=$this->delete($tid);
 				if($xe){
 					$re['re']="success";
@@ -62,7 +74,7 @@
 			}
 			return $re;
 		}
-		function tag_del_one($pid,$tid){
+		function tag_del_one($pid,$tid){//删除Tid中的PID
 			$xe=$this->find($tid);
 			$arr=json_decode($xe['post'],true);//ARRAY
 			$xee=in_array($pid, $arr);
@@ -71,11 +83,11 @@
 				array_splice($arr,$key,1);
 				$save['post']=json_encode($arr);
 				$save['tid']=$tid;
+				$save['num']=$xe['num']-1;
 				$this->save($save);
 			}
-
 		}
-		function post_del_tag($pid){
+		function post_del_tag($pid){//删除POST中对应的tag
 			$pre=D('Post')->find($pid);
 			$tag=json_decode($pre['tid'],true);//获得全部
 			foreach ($tag as  $value) {

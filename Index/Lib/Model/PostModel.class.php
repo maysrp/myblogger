@@ -63,7 +63,8 @@
 				if(!$value){
 					continue;
 				}
-				$tid_tag[]=D('Tag')->tag_add($value,$pid);//return $tid_$tag
+				$zx=D('Tag')->tag_add($value,$pid);//return $tid_$tag
+				$tid_tag[$zx['tid']]=$zx;
 			}
 			$add_tid['tid']=json_encode($tid_tag);
 			$add_tid['pid']=$pid;
@@ -86,6 +87,11 @@
 		function del($pid){
 			$dre=$this->own($pid);
 			if($dre){
+				D('Repost')->post_del($pid);//删除文章并清空该回复
+				$tid_array=json_decode($dre['tid'],true);//删除TID
+				foreach ($tid_array as $key=>$value ) {
+					D('Tag')->tag_del_one($pid,$key);
+				}
 				$x=$this->delete($pid);
 				if($x){
 					D('Shelves')->post_del($dre);//
@@ -120,7 +126,8 @@
 					if(!$value){
 						continue;
 					}
-					$tid_tag[]=D('Tag')->tag_add($value,$post['pid']);//return $tid_$tag
+					$zx=D('Tag')->tag_add($value,$post['pid']);//return $tid_$tag
+					$tid_tag[$zx['tid']]=$zx;
 				}
 				$data['tid']=json_encode($tid_tag);
 				$data['pid']=$post['pid'];
