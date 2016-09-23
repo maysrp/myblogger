@@ -80,6 +80,31 @@ class IndexAction extends Action {
  		}
     }
     function search(){
+        $is_mobile=is_mobile();
+        if($is_mobile){//移动页面搜索
+            if(!$_GET){
+                $this->display("mobile_search");
+                return;
+            }else{
+                $sea=$_GET['search'];
+                $se['title']=array('like',"%".$sea."%");
+                $all=D("Post")->where($se)->select();
+                $count=count($all);
+                import('ORG.Util.Page');
+                $Page=new Page($count,20);
+                if($_GET['p']<1){
+                    $_GET['p']=1;
+                }else{
+                    $_GET['p']=(int)$_GET['p'];//
+                }
+                $list=array_slice($all, 20*($_GET['p']-1),20);
+                $this->assign('list',$list);
+                $show=$Page->show();
+                $this->assign('page',$show);
+                $this->display("mobile_search");
+                return;
+            }
+        }
     	$sea=$_GET['search'];
         $se['title']=array('like',"%".$sea."%");
         $all=D("Post")->where($se)->select();
