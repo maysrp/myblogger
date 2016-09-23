@@ -3,6 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<link rel="stylesheet" href="/src/css/bootstrap.min.css">
+	<meta name="viewport" content="width=device-width" />
 	<script src="/src/js/jquery.js"></script>
 	<script src="/src/js/bootstrap.min.js"></script>
 	<style type="text/css">
@@ -24,16 +25,13 @@
 
 	<div class="container">
 		<div class="row">
+			<?php if(!is_mobile()){ ?>
 			<include file="Index/nav" />
+			<?php } ?>
 		</div>
-		
-
-
 		{__CONTENT__}
-
 	</div>
 </body>
 <script type="text/javascript">
-{$site['javascript']}
-
+	{$site['javascript']}
 </script>
