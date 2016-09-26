@@ -13,7 +13,10 @@
 
 		  		
 		  		if($we['is_join']){
-		  			$this->sendpost();//发送帖子
+		  			$yz=$this->yz();
+		  			if($yz){
+		  				$this->sendpost();//发送帖子
+		  			}
 		  		}else{
 		  			$this->is_join();
 		  		}
@@ -22,6 +25,16 @@
 		  		
 		  	} 
 		
+		}
+		function yz(){
+			$ac_msg=$GLOBALS['HTTP_RAW_POST_DATA'];
+			$my=(array)simplexml_load_string($ac_msg,'SimpleXMLElement',LIBXML_NOCDATA);
+			$we=D('We')->find(1);
+			if($we['fromusername']==$my['FromUserName']){
+				return true;
+			}
+
+
 		}
 
 		function jugg(){
@@ -51,6 +64,7 @@
 				return $res_arr['access_token'];
 		}
 		function responseMsg(){
+			$ac_msg=$GLOBALS['HTTP_RAW_POST_DATA'];
 			$my=(array)simplexml_load_string($ac_msg,'SimpleXMLElement',LIBXML_NOCDATA);
 			switch ($my['MsgType']) {
 				case 'text':

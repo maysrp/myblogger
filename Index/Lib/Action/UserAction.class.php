@@ -371,6 +371,7 @@
  				$add['we']=1;
  				$add['wekey']=$_POST['wekey'];
  				$add['token']=$_POST['token'];
+ 				$add['fromusername']="";
  				$add['time']=time();
  				$add['is_join']=0;
  				D('We')->save($add);
