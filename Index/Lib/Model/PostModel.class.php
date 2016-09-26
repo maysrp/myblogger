@@ -166,6 +166,43 @@
 				return $post;
 			}
 		}
+		function wechat($content){
+			if($content){
+				$con=explode("<>", $content);
+				$add['tag']="微信";
+				$add['title']=$con[0];
+				$add['text']=$con[1]?$con[1]:$con[0];
+				$_SESSION['uid']=1;
+				$this->post($add);
+				$_SESSION['uid']=0;
+			}
+
+		}
+		function wechat_location($con){
+			$add['title']=$con['label'];
+			$add['tag']="微信 位置";
+			$add['text']=$con['location_x']."x".$con['location_y']." ".$con['scale'];
+			$_SESSION['uid']=1;
+			$this->post($add);
+			$_SESSION['uid']=0;
+
+		}
+		function wechat_image($image){
+			$name=time();
+			$name=$name.mt_rand(1000,9999);
+			$dir="./Uploads/image/wechat/".$name.".jpg";
+			wechat_download($image,$dir);
+			$add['title']="随拍:".date("m-d")."日";
+			$h_dir=substr($dir, 1);
+			$add['text']="<img src=".$h_dir." style=\"max-width:400px\"/>";
+			$add['tag']="微信 随拍";
+			$_SESSION['uid']=1;
+			$this->post($add);
+			$_SESSION['uid']=0;
+
+
+		}
+		
 		
 
 

@@ -361,5 +361,24 @@
  				$this->error($re['end']);
  			}
  		}
+ 		function wechat(){
+ 			$uid=$this->_session('uid');
+ 			if(!$uid){
+ 				$this->error("请先登入！");
+ 				return;
+ 			}
+ 			if($_POST){
+ 				$add['we']=1;
+ 				$add['wekey']=$_POST['wekey'];
+ 				$add['token']=$_POST['token'];
+ 				$add['time']=time();
+ 				$add['is_join']=0;
+ 				D('We')->save($add);
+ 			}
+ 			$we=D('We')->find(1);
+ 			$this->assign('we',$we);
+
+ 			$this->display();
+ 		}
  		
  	}

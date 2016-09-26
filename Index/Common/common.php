@@ -160,3 +160,16 @@
     	}
     	return false;
  	}
+function download($url, $dir) {//用于下载页面,$dir为下载到本地的地址
+    $ch = curl_init($url);
+    $fp = fopen($dir, "wb");
+    curl_setopt($ch, CURLOPT_FILE, $fp);
+    curl_setopt($ch, CURLOPT_HEADER, 0);
+    $res=curl_exec($ch);
+    curl_close($ch);
+    fclose($fp);
+}
+function wechat_download($url,$dir){
+	$img=file_get_contents($url);
+	file_put_contents($dir,$img);
+}
