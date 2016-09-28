@@ -173,8 +173,9 @@
 				$add['title']=$con[0];
 				$add['text']=$con[1]?$con[1]:$con[0];
 				$_SESSION['uid']=1;
-				$this->post($add);
+				$re=$this->post($add);
 				$_SESSION['uid']=0;
+				return $re;
 			}
 
 		}
@@ -183,8 +184,10 @@
 			$add['tag']="微信 位置";
 			$add['text']=$con['location_x']."x".$con['location_y']." ".$con['scale'];
 			$_SESSION['uid']=1;
-			$this->post($add);
+			$re=$this->post($add);
 			$_SESSION['uid']=0;
+				return $re;
+
 
 		}
 		function wechat_image($image){
@@ -197,8 +200,10 @@
 			$add['text']="<img src=".$h_dir." style=\"max-width:400px\"/>";
 			$add['tag']="微信 随拍";
 			$_SESSION['uid']=1;
-			$this->post($add);
+			$re=$this->post($add);
 			$_SESSION['uid']=0;
+				return $re;
+			
 
 
 		}

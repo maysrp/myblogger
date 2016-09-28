@@ -5,18 +5,17 @@
 		function index(){
 			$we=D('We')->find(1);
 			//var_dump($we);
-		  	$jugg=$this->jugg();
+		  	$jugg=$this->jugg($we);
 		  	//$this->responseMsg();
 		  	if($jugg){
 		  		//echo $_GET["echostr"];//如果微信开发页面成功验证后即可删除该行
 		  		//$this->responseMsg();
 
-		  		
+		  		$ac_msg=$GLOBALS['HTTP_RAW_POST_DATA'];
+				$add['info']=$ac_msg;
+				D('Wechat')->add($add);
 		  		if($we['is_join']){
-		  			$yz=$this->yz();
-		  			if($yz){
-		  				$this->sendpost();//发送帖子
-		  			}
+		  			$this->sendpost();//发送帖子
 		  		}else{
 		  			$this->is_join();
 		  		}
@@ -26,19 +25,9 @@
 		  	} 
 		
 		}
-		function yz(){
-			$ac_msg=$GLOBALS['HTTP_RAW_POST_DATA'];
-			$my=(array)simplexml_load_string($ac_msg,'SimpleXMLElement',LIBXML_NOCDATA);
-			$we=D('We')->find(1);
-			if($we['fromusername']==$my['FromUserName']){
-				return true;
-			}
 
-
-		}
-
-		function jugg(){
-			$we=D('We')->find(1);
+		function jugg($we){
+			
 			$signature = $_GET["signature"];
         	$timestamp = $_GET["timestamp"];
         	$nonce = $_GET["nonce"];		
@@ -54,8 +43,8 @@
 			}
 		}
 		function access_token(){
-				$appid="wxd22221111111111f11111111111e9e3cf9c";
-				$appsecret="8a5fbf85efc1111111111ca697f7e";
+				$appid="wxd0924d1fe9e3cf9c";
+				$appsecret="8a5fbf85efc9af3fd1b018a9ca697f7e";
 				$url="https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=".$appid."&secret=".$appsecret;
 				$res=file_get_contents($url);
 				$res_arr=json_decode($res,true);
@@ -64,7 +53,6 @@
 				return $res_arr['access_token'];
 		}
 		function responseMsg(){
-			$ac_msg=$GLOBALS['HTTP_RAW_POST_DATA'];
 			$my=(array)simplexml_load_string($ac_msg,'SimpleXMLElement',LIBXML_NOCDATA);
 			switch ($my['MsgType']) {
 				case 'text':
@@ -119,30 +107,33 @@
 			$my=(array)simplexml_load_string($ac_msg,'SimpleXMLElement',LIBXML_NOCDATA);
 			switch ($my['MsgType']) {
 				case 'text':
-					D('Post')->wechat($my['Content']);
+					$content=D('Post')->wechat($my['Content']);
+					$this->return_text($my,$content);
 	
 					break;
 				case 'image':
 					$imgurl=$my['PicUrl'];
 					//$my['media_id']=$msg_obj->MediaId;
-					$xc['info']=$imgurl;
-					D('Wechat')->add($xc);
-					wechat_download($imgurl,"./Uploads/image/xxx.jpg");
-					D('Post')->wechat_image($imgurl);
+					$content=D('Post')->wechat_image($imgurl);
+					$this->return_text($my,$content);
 	
 					break;
 				case "link":
 					$add['title']=$my['Title'];
 					$add['description']=$my['Description'];
 					$add['url']=$my['Url'];
-					D('Post')->wechat_link($add);
+					$content=D('Post')->wechat_link($add);
+					$this->return_text($my,$content);
+
 					break;
 				case 'location'://不处理
 					$add['location_x']=$my['Location_X'];
 					$add['location_y']=$my['Location_Y'];
 					$add['label']=$my['Label'];//显示位置
 					$add['scale']=$my['Scale'];//比例放大，可以理解为精度
-					D('Post')->wechat_location($add);
+					$content=D('Post')->wechat_location($add);
+					$this->return_text($my,$content);
+
 					break;
 				default:
 					
@@ -164,7 +155,32 @@
 			}
 
 		}
-		
+		function return_text($my,$content){
+			$textTpl = "<xml>
+							<ToUserName><![CDATA[%s]]></ToUserName>
+							<FromUserName><![CDATA[%s]]></FromUserName>
+							<CreateTime>%s</CreateTime>
+							<MsgType><![CDATA[%s]]></MsgType>
+							<Content><![CDATA[%s]]></Content>
+							<FuncFlag>0</FuncFlag>
+						</xml>";
+						if($content){
+							$content="发送成功";
+							$type = "text";	
+                			$time=time();
+                			$resultStr = sprintf($textTpl,$my['FromUserName'], $my['ToUserName'], $time, $type, $content);
+                			echo $resultStr;
+
+						}else{
+							$content="发送失败";
+							$type = "text";	
+                			$time=time();
+                			$resultStr = sprintf($textTpl,$my['FromUserName'], $my['ToUserName'], $time, $type, $content);
+                			echo $resultStr;
+						}
+
+
+		}
 		
 		function my_text($my){
 			$textTpl = "<xml>

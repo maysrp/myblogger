@@ -76,7 +76,11 @@
 	function postimage($v){
 		$image=json_decode($v,true);
 		if(count($image)){
-			echo "<p>".$image[0]."</p>";
+			if($count>2){
+				echo "<p>".$image[0].$image[1]."</p>";
+			}else{
+				echo "<p>".$image[0]."</p>";
+			}
 		}
 	}
 	function shelves(){
